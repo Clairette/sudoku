@@ -1,60 +1,65 @@
+/***********************************************
+* Project: 			Sudoku
+************************************************
+*
+* Authors: 		Claire Giry
+*				Hans-Peter Hoellwirth
+*				Scott Cantisani
+*				Simranbir Singh
+*				Oana Radu
+*
+* Creation date:	14.02.2013
+* Last updated:		28.02.2013
+***********************************************/
 //import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.border.Border;
-
 public class SudokuGUI extends Frame {
 
-	private Sudoku sudoku = new Sudoku();
+	private Board board;
 	private Panel panel = new Panel();
-	
-    
+
 	public SudokuGUI () {
+		tempBoard();
 		initWindow();
+	}
+
+	public void tempBoard () {
+		Generator generator = new Generator();
+		generator.generateBoard(2);
+		board = generator.getBoard();
+
+		board.printBoard();
+		System.out.println();
+
+		Solver solver = new Solver(board);
+		solver.solveBoard();
+		board = solver.getBoard();
+
+		board.printBoard();
 	}
 
 	public void initWindow () {
 		setTitle("Sudoku");
-    		setSize(400,400);
-    		addWindowListener(new SudokuWindowListener());
-		drawPanel(9, 9);
+	    setSize(200,200);
+     	addWindowListener(new SudokuWindowListener());
+		drawPanel();
 		setVisible(true);
 	}
 
-	public void drawPanel (int width, int length){
+	public void drawPanel () {
 
-		JFrame frame=new JFrame(); //creates frame
-	    	JLabel[][] grid; //names the grid of label
-	    
-					
-		frame.setLayout(new GridLayout(width,length)); //set layout
-        	grid=new JLabel[width][length]; //allocate the size of grid
-        
-        	for(int i=0; i<length; i++){
-                for(int j=0; j<width; j++){
-                	
-                
-                        grid[i][j]=new JLabel(" 1"); //creates new label   
-                        Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-                        grid[i][j].setBorder(border);
-                        frame.add(grid[i][j]); //adds label to grid
-                }
-        	}
-		
 	}
-  	
-	class SudokuWindowListener extends WindowAdapter
-  	{
-    	public void windowClosing (WindowEvent e)
-    	{
-    		e.getWindow().dispose();
-      		System.exit(0);
-    	}
-  	} 
+
+   	class SudokuWindowListener extends WindowAdapter
+   	{
+     	public void windowClosing (WindowEvent e)
+     	{
+     		e.getWindow().dispose();
+       		System.exit(0);
+     	}
+   	}
 
 	public static void main (String[] args) {
 		new SudokuGUI();
