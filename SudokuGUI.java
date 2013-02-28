@@ -1,4 +1,3 @@
-
 //import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,9 +18,9 @@ public class SudokuGUI extends Frame {
 	}
 
 	public void initWindow () {
-	    setTitle("Sudoku");
-    	setSize(400,400);
-    	addWindowListener(new SudokuWindowListener());
+		setTitle("Sudoku");
+    		setSize(400,400);
+    		addWindowListener(new SudokuWindowListener());
 		drawPanel(9, 9);
 		setVisible(true);
 	}
@@ -29,11 +28,11 @@ public class SudokuGUI extends Frame {
 	public void drawPanel (int width, int length){
 
 		JFrame frame=new JFrame(); //creates frame
-	    JLabel[][] grid; //names the grid of label
+	    	JLabel[][] grid; //names the grid of label
 	    
 					
 		frame.setLayout(new GridLayout(width,length)); //set layout
-        grid=new JLabel[width][length]; //allocate the size of grid
+        	grid=new JLabel[width][length]; //allocate the size of grid
         
         	for(int i=0; i<length; i++){
                 for(int j=0; j<width; j++){
