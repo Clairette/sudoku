@@ -2,14 +2,15 @@
 * Project: 			Sudoku
 ************************************************
 *
-* Authors: 		Claire Giry
-*				Hans-Peter Hoellwirth
-*				Scott Cantisani
-*				Simranbir Singh
-*				Oana Radu
+* @author 	Claire Giry           <br>
+*			Hans-Peter Hoellwirth <br>
+*			Scott Cantisani       <br>
+*			Simranbir Singh       <br>
+*			Oana Radu             <br>
 *
-* Creation date:	28.02.2013
-* Last updated:		28.02.2013
+* @since
+* Creation date:	28.02.2013 <br>
+* Last updated:		28.02.2013 <br>
 ***********************************************/
 
 import java.util.Random;
@@ -19,13 +20,38 @@ public class Generator {
 	private Board board = new Board();
 	private Board srcBoard = new Board(); //srcBoard is a board to backtrack to if something goes wrong
 
+	/**
+	* Create new generator object. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*/
 	public Generator () {
 	}
 
+	/**
+	* Get the board. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	* 
+	* @return board
+	*/	
 	public Board getBoard () {
 		return this.board;
 	}
 
+	/**
+	* Generate a new solvable board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani  <br>
+	* Edited by:  -
+	*
+	* @param diff difficulty level (1-3)
+	*/	
 	public void generateBoard (int diff) {
 		initBoard();
 		Random random = new Random();
@@ -38,16 +64,19 @@ public class Generator {
 		}
 	}
 
-	private void resetBoard () {
-		board.copy(srcBoard);
-	}
-
+	/**
+	* Initialize board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani  <br>
+	* Edited by:  -
+	*/	
 	private void initBoard () {
 		//generates a valid filled sudoku puzzle
 		int i, j, n;
 
 		do {
-			resetBoard();
+			board.clear();
 			//fill the board up randomly with numbers, then attempt to solve it
 			//80 attempts at filling a cell (the actual number of filled cells will be 35-45) seems to make for a good balance between solve speed (faster if there are more filled cells) and randomness of puzzles generated
 			for (int k = 0; k < 80; k++) {
@@ -56,7 +85,7 @@ public class Generator {
 				n = random() + 1;
 
 				if (!board.contains(i, j, n)) {
-					board.setCell(i,j,n);
+					board.setCell(i,j,n,true);
 				}
 			}
 		} while (!solvable());
@@ -65,28 +94,55 @@ public class Generator {
 		srcBoard.copy(board);
 	}
 
+	/**
+	* Get random number. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani  <br>
+	* Edited by:  -
+	* 
+	* @return random number (0-8)
+	*/		
 	private int random () {
 		Random rand = new Random();
 		return rand.nextInt(9);
 	}
 
+	/**
+	* Check if board is solvable. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth  <br>
+	* Edited by:  -
+	* 
+	* @return true if solvable, otherwise false
+	*/
 	private boolean solvable () {
-		Solver solver = new Solver(board);
+		Solver solver = new Solver(board, true);
 		return solver.solveBoard();
 	}
 
-
+	/**
+	* Check for multiple solutions by brute force. <p>
+	* 
+	* NOTE: Definitely not the best way to do this but using it for now to test the generator <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani  <br>
+	* Edited by:  -
+	* 
+	* @return true if solvable, otherwise false
+	*/
 	private boolean multSol () {
-		//checks for multiple solutions by brute force. Definitely not the best way to do this but using it for now to test the generator
 		int n = 0;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				if (srcBoard.getCell(i,j) == 0) {
+				if (srcBoard.getCell(i,j) != null && srcBoard.getCell(i,j).equals(0)) {
 					//if a cell in the original puzzle is empty
 					for (int k = 1; k < 10; k++) {
 						//loop through all possible numbers for this cell
-						resetBoard();
-						board.setCell(i,j,k);
+						board.copy(srcBoard);
+						board.setCell(i,j,k, true);
 						if (!board.contains(i, j, k) && solvable()) {
 							//count all possible solutions for numbers in this cell
 							n++;
@@ -97,7 +153,7 @@ public class Generator {
 						//if there is more than one possible solution, return true
 						return true;
 					}
-					board.setCell(i,j,0);
+					board.setCell(i,j,0,true);
 				}
 			}
 		}
@@ -105,20 +161,32 @@ public class Generator {
 		return false;
 	}
 
+	/**
+	* Clear n randomly placed cells. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani  <br>
+	* Edited by:  -
+	* 
+	* @param n number of cells to clear
+	*/
 	private void dig (int n) {
 		//make n randomly placed cells empty
 		int i, j, k, dug = 0;
-
 		while (dug < n) {
 			i = random();
 			j = random();
-			if (board.getCell(i,j) != 0) {
-				k = board.getCell(i,j);
-				board.setCell(i,j,0);
+			if (board.getCell(i,j) == null || !board.getCell(i,j).equals(0)) {
+				if (board.getCell(i,j) == null) {
+					k = 0;
+				} else {
+					k = board.getCell(i,j).getNumber();
+				}
+				board.setCell(i,j,0,true);
 				if (!multSol()) {
 					dug++;
 				} else {
-					board.setCell(i,j,k);
+					board.setCell(i,j,k,true);
 				}
 			}
 		}

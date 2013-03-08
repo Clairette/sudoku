@@ -2,67 +2,95 @@
 * Project: 			Sudoku
 ************************************************
 *
-* Authors: 		Claire Giry
-*				Hans-Peter Hoellwirth
-*				Scott Cantisani
-*				Simranbir Singh
-*				Oana Radu
+* @author 	Claire Giry           <br>
+*			Hans-Peter Hoellwirth <br>
+*			Scott Cantisani       <br>
+*			Simranbir Singh       <br>
+*			Oana Radu             <br>
 *
-* Creation date:	06.02.2013
-* Last updated:		28.02.2013
+* @since
+* Creation date:	06.02.2013 <br>
+* Last updated:		08.03.2013 <br>
 ***********************************************/
 
 public class Board {
 
-	private int[][] board = new int[9][9];
+	private Cell[][] board = new Cell[9][9];
 
+	/**
+	* Create new board object.
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	*/	
 	public Board () {
 	}
 
-	public void printBoard () {
-		//rough print function! just console for now
-		System.out.println("-------------------");
-		for (int i = 0; i < 9; i++) {
-			System.out.print("|");
-			for (int j = 0; j < 9; j++) {
-				if (board[i][j] == 0) {
-					System.out.print("*");
-				} else {
-					System.out.print(board[i][j]);
-				}
-
-				if (j % 3 == 2) {
-					System.out.print("|");
-				} else {
-					System.out.print(" ");
-				}
-			}
-			if (i % 3 == 2) {
-				System.out.println("\n-------------------");
-			} else {
-				System.out.println();
-			}
-		}
-	}
-
-	public void copy (Board board) {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				this.board[i][j] = board.getCell(i,j);
-			}
-		}
-	}
-
-	public int getCell (int i, int j) {
+	/**
+	* Get cell from given postion. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @param i ith row on board (0-8)
+	* @param j jth column on board (0-8)
+	* @return cell at position (i,j)
+	*/	
+	public Cell getCell (int i, int j) {
 		return board[i][j];
 	}
 
-	public void setCell (int i, int j, int number) {
-		board[i][j] = number;
+	/**
+	* Set cell at given postion. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @param i ith row on board (0-8)
+	* @param j jth column on board (0-8)
+	* @param c cell
+	*/
+	public void setCell (int i, int j, Cell c) {
+		board[i][j] = c;
 	}
 
-	public int[] getCol (int j) {
-		int[] col = new int[9];
+	/**
+	* Set new cell at given postion. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @param i ith row on board (0-8)
+	* @param j jth column on board (0-8)
+	* @param number number of cell (1-9)
+	* @param fixed  status of cell (fixed or variable)
+	*/
+	public void setCell (int i, int j, int number, boolean fixed) {
+		if (board[i][j] == null) {
+			board[i][j] = new Cell (number, fixed);
+		} else {
+			board[i][j].setNumber(number);
+			board[i][j].setFixed(fixed);
+		}
+	}
+
+	/**
+	* Get given column on board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*
+	* @param j jth column on board (0-8)
+	* @return jth column as an array of cells
+	*/
+	public Cell[] getCol (int j) {
+		Cell[] col = new Cell[9];
 
 		for (int i = 0; i < 9; i++) {
 			col[i] = board[i][j];
@@ -70,13 +98,34 @@ public class Board {
 		return col;
 	}
 
-	public int[] getRow (int i) {
+	/**
+	* Get given row on board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*
+	* @param i ith column on board (0-8)
+	* @return ith row as an array of cells
+	*/
+	public Cell[] getRow (int i) {
 		return board[i];
 	}
 
-	public int[] getBlock (int i, int j) {
+	/**
+	* Get block of ith-jth cell on board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*
+	* @param i ith row on board (0-8)
+	* @param j jth column on board (0-8)
+	* @return block of ith-jth cell as array of cells
+	*/
+	public Cell[] getBlock (int i, int j) {
 		//could use improvement
-		int[] block = new int[9];
+		Cell[] block = new Cell[9];
 
 		i = i - (i % 3);
 		j = j - (j % 3);
@@ -91,10 +140,22 @@ public class Board {
 		return block;
 	}
 
+	/**
+	* Check if number is already contained in row, column or block of given position. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*
+	* @param i ith row on board (0-8)
+	* @param j jth column on board (0-8)
+	* @param n number (1-9)
+	* @return true if number is already contained, otherwise false
+	*/
 	public boolean contains(int i, int j, int n) {
-		int[] col = getCol(j);
-		int[] row = getRow(i);
-		int[] block = getBlock(i, j);
+		Cell[] col = getCol(j);
+		Cell[] row = getRow(i);
+		Cell[] block = getBlock(i, j);
 
 		if(contains(col, n) || contains(row, n) || contains(block, n)) {
 			return true;
@@ -103,12 +164,85 @@ public class Board {
 		}
 	}
 
-	public boolean contains (int[] array, int n) {
+	/**
+	* Check if number already occurs in array. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*
+	* @param array array of cells
+	* @param n number (1-9)
+	* @return true if number occurs, otherwise false
+	*/
+	private boolean contains (Cell[] array, int n) {
 		for (int i = 0; i < array.length; i++) {
-			if (array[i] == n) {
+			if (array[i] != null && array[i].equals(n)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	* Console output of board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  -
+	*/
+	public void printBoard () {
+		System.out.println("-------------------");
+		for (int i = 0; i < 9; i++) {
+			System.out.print("|");
+			for (int j = 0; j < 9; j++) {
+				if (board[i][j] == null || board[i][j].equals(0)) {
+					System.out.print("*");
+				} else {
+					System.out.print(board[i][j]);
+				}
+				if (j % 3 == 2) {
+					System.out.print("|");
+				} else {
+					System.out.print(" ");
+				}
+			}
+			if (i % 3 == 2) {
+				System.out.println("\n-------------------");
+			} else {
+				System.out.println();
+			}
+		}
+	}
+
+	/**
+	* Copies the cells of a given board. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @param board the board to copy
+	*/	
+	public void copy (Board board) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				this.board[i][j] = board.getCell(i,j);
+			}
+		}
+	}
+
+	/**
+	* Clears the board.
+	*
+	* Created by: Hans-Peter Hoellwirth
+	* Edited by:  -
+	*/
+	public void clear () {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				this.board[i][j] = new Cell(0,false);
+			}
+		}
 	}
 }

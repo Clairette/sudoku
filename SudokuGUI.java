@@ -2,14 +2,15 @@
 * Project: 			Sudoku
 ************************************************
 *
-* Authors: 		Claire Giry
-*				Hans-Peter Hoellwirth
-*				Scott Cantisani
-*				Simranbir Singh
-*				Oana Radu
+* @author 	Claire Giry           <br>
+*			Hans-Peter Hoellwirth <br>
+*			Scott Cantisani       <br>
+*			Simranbir Singh       <br>
+*			Oana Radu             <br>
 *
-* Creation date:	14.02.2013
-* Last updated:		28.02.2013
+* @since
+* Creation date:	14.02.2013 <br>
+* Last updated:		28.02.2013 <br>
 ***********************************************/
 //import javax.swing.*;
 import java.awt.*;
@@ -20,11 +21,26 @@ public class SudokuGUI extends Frame {
 	private Board board;
 	private Panel panel = new Panel();
 
+	/**
+	* Create new SudokuGUI object. <p>
+	* 
+	* Created by: Hans-Peter Hoellwirth  <br>
+	* Edited by:  -
+	*/
 	public SudokuGUI () {
 		tempBoard();
 		initWindow();
 	}
 
+	/**
+	* Simulate behaviour of buttons. <p>
+	* 
+	* NOTE: temporary function <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth  <br>
+	* Edited by:  -
+	*/
 	public void tempBoard () {
 		Generator generator = new Generator();
 		generator.generateBoard(2);
@@ -40,6 +56,13 @@ public class SudokuGUI extends Frame {
 		board.printBoard();
 	}
 
+	/**
+	* Initialize window <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*/
 	public void initWindow () {
 		setTitle("Sudoku");
 	    setSize(200,200);
@@ -48,13 +71,27 @@ public class SudokuGUI extends Frame {
 		setVisible(true);
 	}
 
+	/**
+	* Draw panel <p>
+	* 
+	* @author 
+	* Created by: - <br>
+	* Edited by:  -
+	*/
 	public void drawPanel () {
 
 	}
 
    	class SudokuWindowListener extends WindowAdapter
    	{
-     	public void windowClosing (WindowEvent e)
+   		/**
+   		* Terminate application if window gets closed <p>
+   		* 
+   		* @author 
+   		* Created by: Hans-Peter Hoellwirth <br>
+   		* Edited by:  -
+   		*/
+   		public void windowClosing (WindowEvent e)
      	{
      		e.getWindow().dispose();
        		System.exit(0);
