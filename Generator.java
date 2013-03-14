@@ -10,7 +10,7 @@
 *
 * @since
 * Creation date:	28.02.2013 <br>
-* Last updated:		28.02.2013 <br>
+* Last updated:		14.03.2013 <br>
 ***********************************************/
 
 import java.util.Random;
@@ -66,19 +66,17 @@ public class Generator {
 
 	/**
 	* Initialize board. <p>
+	* Fills the board up randomly with numbers, then attempts to solve it to create a finished puzzle.
 	* 
 	* @author 
 	* Created by: Scott Cantisani  <br>
 	* Edited by:  -
 	*/	
 	private void initBoard () {
-		//generates a valid filled sudoku puzzle
 		int i, j, n;
 
 		do {
 			board.clear();
-			//fill the board up randomly with numbers, then attempt to solve it
-			//80 attempts at filling a cell (the actual number of filled cells will be 35-45) seems to make for a good balance between solve speed (faster if there are more filled cells) and randomness of puzzles generated
 			for (int k = 0; k < 80; k++) {
 				i = random();
 				j = random();
@@ -90,7 +88,6 @@ public class Generator {
 			}
 		} while (!solvable());
 
-		//once a solution is found, set srcBoard to the solved board
 		srcBoard.copy(board);
 	}
 
@@ -153,7 +150,7 @@ public class Generator {
 						//if there is more than one possible solution, return true
 						return true;
 					}
-					board.setCell(i,j,0,true);
+					board.setCell(i,j,0,false);
 				}
 			}
 		}
@@ -171,7 +168,6 @@ public class Generator {
 	* @param n number of cells to clear
 	*/
 	private void dig (int n) {
-		//make n randomly placed cells empty
 		int i, j, k, dug = 0;
 		while (dug < n) {
 			i = random();
@@ -182,11 +178,11 @@ public class Generator {
 				} else {
 					k = board.getCell(i,j).getNumber();
 				}
-				board.setCell(i,j,0,true);
+				board.setCell(i, j, 0, false);
 				if (!multSol()) {
 					dug++;
 				} else {
-					board.setCell(i,j,k,true);
+					board.setCell(i, j, k, true);
 				}
 			}
 		}

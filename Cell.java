@@ -10,7 +10,7 @@
 *
 * @since
 * Creation date:	07.03.2013 <br>
-* Last updated:		07.03.2013 <br>
+* Last updated:		14.03.2013 <br>
 ***********************************************/
 
 public class Cell {
@@ -23,10 +23,11 @@ public class Cell {
 	* 
 	* @author 
 	* Created by: Hans-Peter Hoellwirth <br>
-	* Edited by:  -
+	* Edited by:  Scott Cantisani (14.03.2013)
 	*
 	*/	
 	public Cell () {
+		fixed = false;
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class Cell {
 	}
 
 	/**
-	* Compare cell (only varifies number). <p>
+	* Compare cell (only verifies number). <p>
 	* 
 	* @author 
 	* Created by: Hans-Peter Hoellwirth <br>

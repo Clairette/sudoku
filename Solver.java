@@ -113,7 +113,7 @@ public class Solver {
 	}
 
 	/**
-	* TBD. <p>
+	* Get next cell, reading left to right and top to bottom. <p>
 	* 
 	* @author 
 	* Created by: Scott Cantisani <br>
