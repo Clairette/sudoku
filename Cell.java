@@ -72,6 +72,19 @@ public class Cell {
 	}
 
 	/**
+	* Get whether the cell is already set (1-9). <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @return true if set, otherwise false
+	*/
+	public boolean isEmpty () {
+		return this.number == 0;
+	}
+
+	/**
 	* Get whether the cell is fixed or variable. <p>
 	* 
 	* @author 

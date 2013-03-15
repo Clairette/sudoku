@@ -17,9 +17,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SudokuGUI extends JFrame {
-
-	private Board board;
-	private JButton[][] buttons = new JButton[9][9];
+	
+	private Grid grid;
+	private JButton solve;
+	private JButton check;
+	private JButton generate;
 
 	/**
 	* Create new SudokuGUI object. <p>
@@ -28,32 +30,7 @@ public class SudokuGUI extends JFrame {
 	* Edited by:  -
 	*/
 	public SudokuGUI () {
-		tempBoard();
 		initWindow();
-	}
-
-	/**
-	* Simulate behaviour of buttons. <p>
-	* 
-	* NOTE: temporary function <p>
-	* 
-	* @author 
-	* Created by: Hans-Peter Hoellwirth  <br>
-	* Edited by:  -
-	*/
-	public void tempBoard () {
-		Generator generator = new Generator();
-		generator.generateBoard(2);
-		board = generator.getBoard();
-
-		board.printBoard();
-		System.out.println();
-
-//		Solver solver = new Solver(board);
-//		solver.solveBoard();
-//		board = solver.getBoard();
-//
-//		board.printBoard();
 	}
 
 	/**
@@ -65,8 +42,7 @@ public class SudokuGUI extends JFrame {
 	*/
 	public void initWindow () {
 		setTitle("Sudoku");
-		setSize(900, 1000);
-//	     	addWindowListener(new SudokuWindowListener());
+		setSize(450, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		drawPanel();
 		setVisible(true);
@@ -81,117 +57,41 @@ public class SudokuGUI extends JFrame {
 	*/
 	public void drawPanel () {
 		setLayout(new BorderLayout(0, 40));
-		add(new Grids(), BorderLayout.CENTER);
-		add(new ThreeButtons(), BorderLayout.SOUTH);
+	
+		this.grid = new Grid();
+		add(this.grid, BorderLayout.CENTER);
+		
+		this.generate = new JButton("Generate"); 		
+		this.check = new JButton ("Check");
+		this.solve = new JButton("Solve");
+		this.solve.addActionListener(new ActionListener() {	 
+            public void actionPerformed(ActionEvent e)
+            {
+            	solveBoard();
+            }
+        }); 		
+		
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new GridLayout(1, 3, 20, 20));
+		buttons.add(this.generate);
+		buttons.add(this.check);
+		buttons.add(this.solve);		
+		add(buttons, BorderLayout.SOUTH);
 	}
-
+	
 	/**
-	* Terminate application if window gets closed <p>
+	* Solve board. <p>
 	* 
 	* @author 
 	* Created by: Hans-Peter Hoellwirth <br>
-	* Edited by:  -
+	* Edited by:  - 
 	*/
-//   	class SudokuWindowListener extends WindowAdapter {
-//		public void windowClosing (WindowEvent e) {
-//			e.getWindow().dispose();
-//			System.exit(0);
-//		}
-//	}
-
-	/**
-	* Create a panel with the Generate, Check and Solve buttons. <p>
-	* 
-	* @author 
-	* Created by: Scott Cantisani <br>
-	* Edited by:  -
-	*/
-	class ThreeButtons extends JPanel {
-		public ThreeButtons () {
-			setLayout(new GridLayout(1, 3, 20, 20));
-			add(new Button("Generate"));
-			add(new Button("Check"));
-			add(new Button("Solve"));
-		}
-	}
-
-	/**
-	* Paint the sudoku board and overlay the numbers. <p>
-	* 
-	* @author 
-	* Created by: Scott Cantisani <br>
-	* Edited by:  -
-	*/
-	class Grids extends JPanel {
-
-		public Grids () {
-			setBackground(Color.WHITE);
-			setLayout(new GridLayout (9, 9));
-			for (int i = 0; i < 9; i ++) {
-				for (int j = 0; j < 9; j++) {
-					Cell cell = board.getCell(i, j);
-					if (cell.isFixed()) {
-						JLabel num = new JLabel(cell.toString(), JLabel.CENTER);
-						num.setFont(new Font("Arial", Font.BOLD, 20));
-						num.setOpaque(false);
-						add(num);
-					} else {
-						editableCell eCell = new editableCell(i, j);
-						add(eCell);
-					}
-				}
-			}
-		}
-
-		public void paintComponent (Graphics g) {
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setBackground(Color.white);
-			super.paintComponent(g2);
-		
-			int width = getSize().width;
-			int height = getSize().height;
-
-			for (int i = 1; i < 10; i++) {
-				if (i % 3 == 0) {
-					g2.setStroke(new BasicStroke(3));
-					g2.drawLine(i * width/9, 0, i * width/9, height);
-					g2.drawLine(0, i * height/9, width, i * height/9);
-					g2.setStroke(new BasicStroke(1));
-				} else {
-					g2.drawLine(i * width/9, 0, i * width/9, height);
-					g2.drawLine(0, i * height/9, width, i * height/9);
-				}
-			}
-		}
-	}
-
-	/**
-	* JTextField with row and column coordinates. <p>
-	* 
-	* @author 
-	* Created by: Scott Cantisani <br>
-	* Edited by:  -
-	*/
-	class editableCell extends JTextField {
-
-		private int row, column;
-
-		public editableCell (int row, int column) {
-			this.row = row;
-			this.column = column;
-			setOpaque(false);
-			setBorder(BorderFactory.createEmptyBorder());
-			setFont(new Font("Arial", Font.PLAIN, 20));
-			setHorizontalAlignment(JTextField.CENTER);
-		}
-
-		public int getRow () {
-			return row;
-		}
-		
-		public int getColumn () {
-			return column;
-		}
+	private void solveBoard() {
+		System.out.println("solve");
+		Solver solver = new Solver(this.grid.getBoard());
+		solver.solveBoard();
+		this.grid.setBoard(solver.getBoard());
+		this.grid.getBoard().printBoard();
 	}
 	
 	public static void main (String[] args) {
