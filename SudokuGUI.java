@@ -94,6 +94,15 @@ public class SudokuGUI extends JFrame {
 		this.grid.getBoard().printBoard();
 	}
 	
+	private void checkBoard() {
+		Board checkBoard = this.grid.getBoard();
+		//checkBoard.reset();
+		Solver solver = new Solver(checkBoard);
+		solver.solveBoard();
+		checkBoard = solver.getBoard();
+		//this.grid.highlightCells(checkBoard.compare(this.gridBoard()));
+	}
+	
 	public static void main (String[] args) {
 		new SudokuGUI();
 	}

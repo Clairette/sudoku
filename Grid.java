@@ -147,5 +147,13 @@ public class Grid extends JPanel {
 			}
 		}
 	}
+	
+	public void highlightCells (boolean[][] checkMatrix) {
+		for (int i = 0; i < 9; i ++) {
+			for (int j = 0; j < 9; j++) {
+				this.gridCells[i][j].highlightCell(checkMatrix[i][j]);
+			}
+		}
+	}
 }
 

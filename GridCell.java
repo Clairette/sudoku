@@ -60,6 +60,14 @@ public class GridCell extends JTextField  {
 		this.setHorizontalAlignment(JTextField.CENTER);	
 		this.getDocument().addDocumentListener(new CellDocumentListener());
 	}
+	
+	public void highlightCell(boolean valid) {
+		if (valid) {
+			this.setForeground(Color.BLACK);
+		} else {
+			this.setForeground(Color.RED);
+		}
+	}
 
 	/**
 	* Assign customized document for appropriate cell behaviour. <p>
@@ -121,6 +129,7 @@ public class GridCell extends JTextField  {
 		}
 		
 		private void updateCell() {
+			highlightCell(true);
 			try {
 				grid.updateBoardCell(row, column, Integer.parseInt(getText()));
 			}
