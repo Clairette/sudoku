@@ -213,17 +213,46 @@ public class Board {
 				System.out.println();
 			}
 		}
+		/**
+		* Copies the cells of a given board. <p>
+		* 
+		* @author 
+		* Created by: Hans-Peter Hoellwirth <br>
+		* Edited by:  -
+		*
+		* @param board the board to copy
+		*/	
+					
+		boolean rowsworked = true;
+		for(int row = 0; row < 9; row++) {
+			int value = 0;
+			for(int col = 0; col < 9; col++) {
+				value += board[row][col].getNumber();
+			}
+			if (value != 45){
+				rowsworked = false;
+			}
+		}
+		// check that the rows = 45
+		
+		boolean colworked = true;
+		for(int col = 0; col < 9; col++) {
+			int value = 0;
+			for(int row = 0; row < 9; row++) {
+				value += board[row][col].getNumber();
+			}
+			if (value != 45){
+				colworked = false;
+			}
+		}
+		// check that the columns = 45
+		
+		System.out.println("rows= " +rowsworked);
+		System.out.println("col= " +colworked);		
+			
 	}
+	//created by Claire Giry
 
-	/**
-	* Copies the cells of a given board. <p>
-	* 
-	* @author 
-	* Created by: Hans-Peter Hoellwirth <br>
-	* Edited by:  -
-	*
-	* @param board the board to copy
-	*/	
 	public void copy (Board board) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
