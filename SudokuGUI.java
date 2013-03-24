@@ -44,8 +44,56 @@ public class SudokuGUI extends JFrame {
 		setTitle("Sudoku");
 		setSize(450, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		drawMenu();
 		drawPanel();
 		setVisible(true);
+	}
+	
+	public void drawMenu () {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		menu.setMnemonic(KeyEvent.VK_M);
+		JMenuItem itemNew = new JMenuItem("New");
+		itemNew.setSelected(true);
+		itemNew.setMnemonic(KeyEvent.VK_N);
+		itemNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				generateBoard();
+			}
+		});
+		menu.add(itemNew);
+		JMenuItem itemCheck = new JMenuItem("Check");
+		itemCheck.setMnemonic(KeyEvent.VK_C);
+		itemCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				checkBoard();
+			}
+		});
+		menu.add(itemCheck);		
+		JMenuItem itemSolve = new JMenuItem("Solve");
+		itemSolve.setMnemonic(KeyEvent.VK_S);
+		itemSolve.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				solveBoard();
+			}
+		});
+		menu.add(itemSolve);
+		menu.addSeparator();
+		JMenuItem itemExit = new JMenuItem("Exit");
+		itemExit.setMnemonic(KeyEvent.VK_E);
+		itemExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				dispose();
+			}
+		});
+		menu.add(itemExit);	
+		menuBar.add(menu);
+		this.setJMenuBar(menuBar);
 	}
 
 	/**
@@ -101,11 +149,8 @@ public class SudokuGUI extends JFrame {
 	* Edited by:  - 
 	*/
 	private void solveBoard() {
-		Board solveBoard = this.grid.getBoard();
-		solveBoard.reset();
-		Solver solver = new Solver(solveBoard);
-		solver.solveBoard();
-		this.grid.setBoard(solver.getBoard());
+		this.grid.getSudoku().solveBoard();
+		this.grid.refreshGrid();
 	}
 	
 	/**
@@ -116,27 +161,10 @@ public class SudokuGUI extends JFrame {
 	* Edited by:  - 
 	*/
 	private void checkBoard() {
-		Board checkBoard = new Board();
-		checkBoard.copy(this.grid.getBoard());
-		checkBoard.reset();
-
-		Solver solver = new Solver(checkBoard);
-		solver.solveBoard();
-		checkBoard = solver.getBoard();
-
-		boolean[][] compared = checkBoard.compare(this.grid.getBoard());
-		this.grid.highlightCells(compared);
-
-		boolean solved = true;
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if (!compared[i][j]) {
-					solved = false;
-				}
-			}
-		}
-		if (solved) {
+		if (this.grid.getSudoku().isSolved()) {
 			JOptionPane.showMessageDialog(null, "All correct! Congratulations!");
+		} else {
+			this.grid.highlightCells(this.grid.getSudoku().checkBoard());
 		}
 	}
 
@@ -148,9 +176,7 @@ public class SudokuGUI extends JFrame {
 	* Edited by:  - 
 	*/
 	private void generateBoard () {
-		Generator generator = new Generator();
-		generator.generateBoard(2);
-		this.grid.setBoard(generator.getBoard());
+		this.grid.setSudoku(new Sudoku());
 	}
 	
 	public static void main (String[] args) {

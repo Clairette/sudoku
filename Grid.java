@@ -17,7 +17,7 @@ import javax.swing.*;
 
 public class Grid extends JPanel {
 
-	private Board board;
+	private Sudoku sudoku;
 	private GridCell[][] gridCells = new GridCell[9][9];
 
 	/**
@@ -27,51 +27,47 @@ public class Grid extends JPanel {
 	* Edited by:  -
 	*/
 	public Grid () {
-		Generator generator = new Generator();
-		generator.generateBoard(2);
-		this.board = generator.getBoard();
+		this.sudoku = new Sudoku();
 		this.initGrid();
 	}
 
 	/**
-	* Create new grid object with given board. <p>
-	* 
-	* Created by: Hans-Peter Hoellwirth  <br>
-	* Edited by:  -
-	* 
-	* @param board new board
-	*/
-	public Grid (Board board) {
-		this.board = board;
-		this.initGrid();
-	}
-
-	/**
-	* Overwrite existing board. <p>
+	* Overwrite existing sudoku. <p>
 	* 
 	* @author 
 	* Created by: Hans-Peter Hoellwirth  <br>
 	* Edited by:  -
 	* 
-	* @param board new board
+	* @param sudoku new sudoku
 	*/	
-	public void setBoard (Board board) {
-		this.board = board;
-		this.drawGridCells();
-		this.updateUI();
+	public void setSudoku (Sudoku sudoku) {
+		this.sudoku = sudoku;
+		this.refreshGrid();
 	}
 	
 	/**
-	* Get board. <p>
+	* Get sudoku. <p>
 	* 
 	* @author 
 	* Created by: Hans-Peter Hoellwirth  <br>
 	* Edited by:  -
 	* 
-	* return board
+	* return sudoku
 	*/	
-	public Board getBoard () {
-		return this.board;
+	public Sudoku getSudoku () {
+		return this.sudoku;
+	}
+
+	/**
+	* Refresh grid. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  - 
+	*/
+	public void refreshGrid () {
+		this.drawGridCells();
+		this.updateUI();
 	}
 
 	/**
@@ -86,8 +82,8 @@ public class Grid extends JPanel {
 	* @param number new number 
 	*/
 	public void updateBoardCell (int row, int column, int number) {
-		this.board.setCell(row, column, number, false);
-		this.board.printBoard();
+		this.sudoku.getBoard().setCell(row, column, number, false);
+		this.sudoku.getBoard().printBoard();
 	}
 
 	/**
@@ -114,7 +110,7 @@ public class Grid extends JPanel {
 		this.removeAll();
 		for (int i = 0; i < 9; i ++) {
 			for (int j = 0; j < 9; j++) {
-				this.gridCells[i][j] = new GridCell(this, i, j, this.board.getCell(i, j));
+				this.gridCells[i][j] = new GridCell(this, i, j, this.sudoku.getBoard().getCell(i, j));
 				this.add(this.gridCells[i][j]);
 			}
 		}		
