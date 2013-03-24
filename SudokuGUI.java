@@ -101,11 +101,11 @@ public class SudokuGUI extends JFrame {
 	* Edited by:  - 
 	*/
 	private void solveBoard() {
-		System.out.println("solve");
-		Solver solver = new Solver(this.grid.getBoard());
+		Board solveBoard = this.grid.getBoard();
+		solveBoard.reset();
+		Solver solver = new Solver(solveBoard);
 		solver.solveBoard();
 		this.grid.setBoard(solver.getBoard());
-		this.grid.getBoard().printBoard();
 	}
 	
 	/**
