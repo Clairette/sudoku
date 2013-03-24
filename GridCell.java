@@ -61,6 +61,15 @@ public class GridCell extends JTextField  {
 		this.getDocument().addDocumentListener(new CellDocumentListener());
 	}
 	
+	/**
+	* Highlight cell.
+	*
+	* @author
+	* Created by:	Hans-Peter Hoellwirth <br>
+	* Edited by:	-
+	*
+	* @param valid boolean
+	*/
 	public void highlightCell(boolean valid) {
 		if (valid) {
 			this.setForeground(Color.BLACK);

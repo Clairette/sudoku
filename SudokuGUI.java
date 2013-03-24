@@ -62,14 +62,28 @@ public class SudokuGUI extends JFrame {
 		add(this.grid, BorderLayout.CENTER);
 		
 		this.generate = new JButton("Generate"); 		
+		this.generate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				generateBoard();
+			}
+		});
+
 		this.check = new JButton ("Check");
+		this.check.addActionListener(new ActionListener() {	 
+			public void actionPerformed(ActionEvent e)
+			{
+				checkBoard();
+			}
+		});
+
 		this.solve = new JButton("Solve");
 		this.solve.addActionListener(new ActionListener() {	 
-            public void actionPerformed(ActionEvent e)
-            {
-            	solveBoard();
-            }
-        }); 		
+			public void actionPerformed(ActionEvent e)
+			{
+				solveBoard();
+			}
+		});
 		
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 3, 20, 20));
@@ -94,17 +108,52 @@ public class SudokuGUI extends JFrame {
 		this.grid.getBoard().printBoard();
 	}
 	
+	/**
+	* Check board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  - 
+	*/
 	private void checkBoard() {
-		Board checkBoard = this.grid.getBoard();
-		//checkBoard.reset();
+		Board checkBoard = new Board();
+		checkBoard.copy(this.grid.getBoard());
+		checkBoard.reset();
+
 		Solver solver = new Solver(checkBoard);
 		solver.solveBoard();
 		checkBoard = solver.getBoard();
-		//this.grid.highlightCells(checkBoard.compare(this.gridBoard()));
+
+		boolean[][] compared = checkBoard.compare(this.grid.getBoard());
+		this.grid.highlightCells(compared);
+
+		boolean solved = true;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (!compared[i][j]) {
+					solved = false;
+				}
+			}
+		}
+		if (solved) {
+			JOptionPane.showMessageDialog(null, "All correct! Congratulations!");
+		}
+	}
+
+	/**
+	* Generate board. <p>
+	* 
+	* @author 
+	* Created by: Scott Cantisani <br>
+	* Edited by:  - 
+	*/
+	private void generateBoard () {
+		Generator generator = new Generator();
+		generator.generateBoard(2);
+		this.grid.setBoard(generator.getBoard());
 	}
 	
 	public static void main (String[] args) {
 		new SudokuGUI();
 	}
 }
-

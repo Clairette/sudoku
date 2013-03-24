@@ -188,8 +188,8 @@ public class Board {
 	* Console output of board. <p>
 	* 
 	* @author 
-	* Created by: Scott Cantisani <br>
-	* Edited by:  -
+	* Created by:	Scott Cantisani <br>
+	* Edited by:	-
 	*/
 	public void printBoard () {
 		System.out.println("-------------------");
@@ -213,16 +213,17 @@ public class Board {
 				System.out.println();
 			}
 		}
-		/**
-		* Copies the cells of a given board. <p>
-		* 
-		* @author 
-		* Created by: Hans-Peter Hoellwirth <br>
-		* Edited by:  -
-		*
-		* @param board the board to copy
-		*/	
-					
+		checkTotals();
+	}
+	/**
+	* Check sums of rows and columns add up to 45. <p>
+	*
+	* @author
+	* Created by:	Claire Giry <br>
+	* Edited by:	-
+	*/
+
+	public void checkTotals () {
 		boolean rowsworked = true;
 		for(int row = 0; row < 9; row++) {
 			int value = 0;
@@ -249,10 +250,17 @@ public class Board {
 		
 		System.out.println("rows= " +rowsworked);
 		System.out.println("col= " +colworked);		
-			
 	}
-	//created by Claire Giry
 
+	/**
+	* Copies the cells of a given board. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	*
+	* @param board the board to copy
+	*/	
 	public void copy (Board board) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -262,16 +270,58 @@ public class Board {
 	}
 
 	/**
-	* Clears the board.
+	* Clears the board. <p>
 	*
-	* Created by: Hans-Peter Hoellwirth
+	* @author
+	* Created by: Hans-Peter Hoellwirth <br>
 	* Edited by:  -
 	*/
 	public void clear () {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				this.board[i][j] = new Cell(0,false);
+				this.board[i][j] = new Cell(0, false);
 			}
 		}
+	}
+
+	/**
+	* Removes all user input from the board. <p>
+	*
+	* @author
+	* Created by:	Scott Cantisani <br>
+	* Edited by:	-
+	*/
+	public void reset () {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (!getCell(i, j).isFixed()) {
+					this.board[i][j] = new Cell(0, false);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Compares two boards. <p>
+	 *
+	 * @author
+	 * Created by:	Scott Cantisani <br>
+	 * Edited by:	-
+	 *
+	 * @param compBoard the board to be compared
+	 * @return matrix of booleans: true if same number in cell, false if not
+	 */
+	public boolean[][] compare (Board compBoard) {
+		boolean[][] bools = new boolean[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (getCell(i, j).equals(compBoard.getCell(i, j))) {
+					bools[i][j] = true;
+				} else {
+					bools[i][j] = false;
+				}
+			}
+		}
+		return bools;
 	}
 }

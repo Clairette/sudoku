@@ -83,7 +83,7 @@ public class Solver {
 			//if at end of board, puzzle solved
 			return true;
 		} else {
-			if (board.getCell(i,j) != null && board.getCell(i,j).equals(0)) {
+			if (board.getCell(i,j).equals(0)) {
 				//if the cell is empty
 				while (n <= 9) {
 					if (board.contains(i, j, n)) {

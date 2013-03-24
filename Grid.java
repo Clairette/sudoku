@@ -148,6 +148,15 @@ public class Grid extends JPanel {
 		}
 	}
 	
+	/**
+	* Highlight cells. <p>
+	*
+	* @author
+	* Created by:	Hans-Peter Hoellwirth <br>
+	* Edited by	-
+	*
+	* @param checkMatrix matrix of booleans corresponding to cells
+	*/
 	public void highlightCells (boolean[][] checkMatrix) {
 		for (int i = 0; i < 9; i ++) {
 			for (int j = 0; j < 9; j++) {
