@@ -4,8 +4,19 @@ import javax.swing.JOptionPane;
 public class Sudoku {
 
 	private Board board;
+	private int level;
 	
-	public Sudoku () {
+	/**
+	* Create new Sudoku object. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  -
+	* 
+	* @param level level of difficulty
+	*/
+	public Sudoku (int level) {
+		this.level = level;
 		generateBoard();
 	}
 	
@@ -27,11 +38,11 @@ public class Sudoku {
 	* 
 	* @author 
 	* Created by: Scott Cantisani <br>
-	* Edited by:  - 
+	* Edited by:  -
 	*/	
 	public void generateBoard() {
 		Generator generator = new Generator();
-		generator.generateBoard(3);
+		generator.generateBoard(this.level);
 		this.board = generator.getBoard();		
 	}
 	

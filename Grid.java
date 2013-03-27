@@ -25,9 +25,11 @@ public class Grid extends JPanel {
 	* 
 	* Created by: Hans-Peter Hoellwirth  <br>
 	* Edited by:  -
+	* 
+	* @param level level of difficulty
 	*/
-	public Grid () {
-		this.sudoku = new Sudoku();
+	public Grid (int level) {
+		this.sudoku = new Sudoku(level);
 		this.initGrid();
 	}
 
