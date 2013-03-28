@@ -1,9 +1,23 @@
+/***********************************************
+* Project: 			Sudoku
+************************************************
+*
+* @author 	Claire Giry           <br>
+*			Hans-Peter Hoellwirth <br>
+*			Scott Cantisani       <br>
+*			Simranbir Singh       <br>
+*			Oana Radu             <br>
+*
+* @since
+* Creation date:	25.03.2013 <br> 
+* Last updated:		28.03.2013 <br>
+***********************************************/
 import javax.swing.JOptionPane;
-
 
 public class Sudoku {
 
 	private Board board;
+	private Board solution;
 	private int level;
 	
 	/**
@@ -18,6 +32,7 @@ public class Sudoku {
 	public Sudoku (int level) {
 		this.level = level;
 		generateBoard();
+		getSolution();
 	}
 	
 	/**
@@ -45,6 +60,22 @@ public class Sudoku {
 		generator.generateBoard(this.level);
 		this.board = generator.getBoard();		
 	}
+	
+	/**
+	* Compute solution. <p>
+	* 
+	* @author 
+	* Created by: Hans-Peter Hoellwirth <br>
+	* Edited by:  - 
+	*/
+	private void getSolution() {
+		Board solveBoard = new Board();
+		solveBoard.copy(this.board);
+		solveBoard.reset();
+		Solver solver = new Solver(solveBoard);
+		solver.solveBoard();
+		this.solution = solver.getBoard();
+	}		
 	
 	/**
 	* Check board. <p>
@@ -75,17 +106,7 @@ public class Sudoku {
 	* @return true if solved, otherwise false
 	*/
 	public boolean isSolved() {	
-		boolean solved = true;
-		boolean[][] matchMatrix = this.checkBoard();
-		
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if (!matchMatrix[i][j]) {
-					solved = false;
-				}
-			}
-		}
-		return solved;	
+		return this.board.equals(this.solution);
 	}
 	
 	/**
@@ -96,10 +117,6 @@ public class Sudoku {
 	* Edited by:  - 
 	*/
 	public void solveBoard() {
-		Board solveBoard = this.board;
-		solveBoard.reset();
-		Solver solver = new Solver(solveBoard);
-		solver.solveBoard();
-		this.board = solver.getBoard();
-	}	
+		this.board = this.solution;
+	}		
 }

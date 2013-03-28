@@ -324,4 +324,27 @@ public class Board {
 		}
 		return bools;
 	}
+
+	/**
+	 * Compares two boards. <p>
+	 *
+	 * @author
+	 * Created by:	Hans-Peter Hoellwirth <br>
+	 * Edited by:	-
+	 *
+	 * @param board the board to be compared
+	 * @return true if boards are equal, otherwise false
+	 */
+	public boolean equals (Board board) {
+		boolean[][] matchMatrix = this.compare(board);
+		
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (!matchMatrix[i][j]) {
+					return false;
+				}
+			}
+		}
+		return true;			
+	}
 }
