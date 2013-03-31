@@ -213,43 +213,6 @@ public class Board {
 				System.out.println();
 			}
 		}
-		checkTotals();
-	}
-	/**
-	* Check sums of rows and columns add up to 45. <p>
-	*
-	* @author
-	* Created by:	Claire Giry <br>
-	* Edited by:	-
-	*/
-
-	public void checkTotals () {
-		boolean rowsworked = true;
-		for(int row = 0; row < 9; row++) {
-			int value = 0;
-			for(int col = 0; col < 9; col++) {
-				value += board[row][col].getNumber();
-			}
-			if (value != 45){
-				rowsworked = false;
-			}
-		}
-		// check that the rows = 45
-		
-		boolean colworked = true;
-		for(int col = 0; col < 9; col++) {
-			int value = 0;
-			for(int row = 0; row < 9; row++) {
-				value += board[row][col].getNumber();
-			}
-			if (value != 45){
-				colworked = false;
-			}
-		}
-		// check that the columns = 45
-		
-		System.out.println("rows= " +rowsworked);
-		System.out.println("col= " +colworked);		
 	}
 
 	/**
